@@ -19,7 +19,6 @@ import {
 
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
-import { fetchFeed } from '../../services/slices/feedSlice';
 import { checkAuthThunk } from '../../services/slices/authSlice';
 
 import { ProtectedRoute } from '../../utils/protected-route';

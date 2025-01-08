@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { v4 } from 'uuid';
 import { orderBurgerApi } from '@api';
-import { TIngredient } from '@utils-types';
-import { TOrder } from '@utils-types';
+import { TIngredient, TOrder, TConstructorIngredient } from '@utils-types';
 
 interface BurgerConstructorState {
   bun: TIngredient | null;
-  ingredients: TIngredient[];
+  ingredients: TConstructorIngredient[];
   orderModalData: TOrder | null;
   orderRequest: boolean;
 }
@@ -38,7 +38,11 @@ const burgerConstructorSlice = createSlice({
       if (ingredient.type === 'bun') {
         state.bun = ingredient;
       } else {
-        state.ingredients.push(ingredient);
+        const constructorIngredient: TConstructorIngredient = {
+          ...ingredient,
+          id: v4()
+        };
+        state.ingredients.push(constructorIngredient);
       }
     },
     removeIngredient: (state, action: PayloadAction<number>) => {
