@@ -13,7 +13,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
   updateUserError,
   handleSubmit,
   handleCancel,
-  handleInputChange
+  handleInputChange,
+  validationErrors
 }) => (
   <main className={`${commonStyles.container}`}>
     <div className={`mt-30 mr-15 ${styles.menu}`}>
@@ -21,6 +22,7 @@ export const ProfileUI: FC<ProfileUIProps> = ({
     </div>
     <form
       className={`mt-30 ${styles.form} ${commonStyles.form}`}
+      name='profile'
       onSubmit={handleSubmit}
     >
       <>
@@ -31,8 +33,12 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             onChange={handleInputChange}
             value={formValue.name}
             name={'name'}
-            error={false}
-            errorText={''}
+            error={validationErrors.name}
+            errorText={
+              validationErrors.name
+                ? 'Имя должно включать 1 или более символов'
+                : ''
+            }
             size={'default'}
             icon={'EditIcon'}
           />
@@ -44,8 +50,8 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             onChange={handleInputChange}
             value={formValue.email}
             name={'email'}
-            error={false}
-            errorText={''}
+            error={validationErrors.email}
+            errorText={validationErrors.email ? 'Некорректный email' : ''}
             size={'default'}
             icon={'EditIcon'}
           />
@@ -57,8 +63,12 @@ export const ProfileUI: FC<ProfileUIProps> = ({
             onChange={handleInputChange}
             value={formValue.password}
             name={'password'}
-            error={false}
-            errorText={''}
+            error={validationErrors.password}
+            errorText={
+              validationErrors.password
+                ? 'Пароль должен быть больше 6 символов'
+                : ''
+            }
             size={'default'}
             icon={'EditIcon'}
           />

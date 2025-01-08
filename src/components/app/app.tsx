@@ -1,6 +1,9 @@
 import '../../index.css';
 import styles from './app.module.css';
 
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import {
   ConstructorPage,
@@ -14,79 +17,126 @@ import {
   NotFound404
 } from '@pages';
 
-//import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'; // Импорт react-router-dom
+import { useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
+import { fetchFeed } from '../../services/slices/feedSlice';
+import { checkAuthThunk } from '../../services/slices/authSlice';
+
+import { ProtectedRoute } from '../../utils/protected-route';
 
 const App = () => {
-  {
-    /*Тесты 
-  const [modalTitle, setModalTitle] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState<JSX.Element | null>(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  // Роутинг модальных окон
+  const state = location.state as { background?: Location };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setModalContent(null);
+  // Закрытие модального окна
+  const closeModalHandler = () => {
+    navigate(-1);
   };
-    */
-  }
+
+  // Загрузка данных
+  useEffect(() => {
+    dispatch(checkAuthThunk()); // Проверка авторизован ли пользователь
+    dispatch(fetchIngredients()); // Загрузка ингредиентов в конструктор
+    dispatch(fetchFeed()); // Загрузка истории заказов всех пользователей
+  }, [dispatch]);
 
   return (
-    <BrowserRouter>
-      <div className={styles.app}>
-        <AppHeader />
-        <Routes>
-          <Route path='/' element={<ConstructorPage />} />
-          <Route path='/feed' element={<Feed />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/forgot-password' element={<ForgotPassword />} />
-          <Route path='/reset-password' element={<ResetPassword />} />
-          <Route path='/profile' element={<Profile />} />
-          <Route path='/profile/orders' element={<ProfileOrders />} />
+    <div className={styles.app}>
+      <AppHeader />
+      {/* Основные маршруты */}
+      <Routes location={state?.background || location}>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route path='/feed' element={<Feed />} />
+        <Route path='*' element={<NotFound404 />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
 
-          {/* Модалки
-          <Route
-            path='/feed/:number'
-            element={
-              <>
-                <Modal title={modalTitle} onClose={closeModal}>
-                  {modalContent || <OrderInfo />}
-                </Modal>
-              </>
-            }
-          />
+        {/* Защищённые маршруты */}
+        <Route
+          path='/profile'
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
+              <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/login'
+          element={
+            <ProtectedRoute>
+              <Login />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/register'
+          element={
+            <ProtectedRoute>
+              <Register />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/forgot-password'
+          element={
+            <ProtectedRoute>
+              <ForgotPassword />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/reset-password'
+          element={
+            <ProtectedRoute>
+              <ResetPassword />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+
+      {/* Модальные окна */}
+      {state?.background && (
+        <Routes>
           <Route
             path='/ingredients/:id'
             element={
-              <>
-                <Modal title={modalTitle} onClose={closeModal}>
-                  {modalContent || <IngredientDetails />}
-                </Modal>
-              </>
+              <Modal title='Детали ингредиента' onClose={closeModalHandler}>
+                <IngredientDetails />
+              </Modal>
             }
           />
           <Route
-            path='/profile/orders/:number'
+            path='/feed/:number'
             element={
-              <>
-                <Modal title={modalTitle} onClose={closeModal}>
-                  {modalContent || <OrderInfo />}
-                </Modal>
-              </>
+              <Modal title='Информация о заказе' onClose={closeModalHandler}>
+                <OrderInfo />
+              </Modal>
             }
           />
-          */}
-
-          {/* Страница 404 */}
-          <Route path='*' element={<NotFound404 />} />
+          <Route
+            path='profile/orders/:number'
+            element={
+              <Modal title='Информация о заказе' onClose={closeModalHandler}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
         </Routes>
-      </div>
-    </BrowserRouter>
+      )}
+    </div>
   );
 };
-
-console.log('test');
 
 export default App;

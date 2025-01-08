@@ -16,11 +16,16 @@
 
 .link {
   display: flex;
-  text-decoration: none;
+  cursor: pointer;
   color: var(--text-inactive-color);
 }
 
+.link:hover {
+  color: var(--text-primary-color);
+}
+
 .link_active {
+  display: flex;
   color: var(--text-primary-color);
 }
 

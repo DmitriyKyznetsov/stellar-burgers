@@ -11,10 +11,22 @@ import { OrderStatus } from '@components';
 
 export const OrderInfoUI: FC<OrderInfoUIProps> = memo(({ orderInfo }) => (
   <div className={styles.wrap}>
-    <h3 className={`text text_type_main-medium  pb-3 pt-10 ${styles.header}`}>
+    {/* Первая строка: номер заказа */}
+    <h3 className={`text text_type_main-medium pt-10 ${styles.number}`}>
+      #{orderInfo.number}
+    </h3>
+
+    {/* Вторая строка: название бургера */}
+    <h3 className={`text text_type_main-medium pt-10 pb-3`}>
       {orderInfo.name}
     </h3>
-    <OrderStatus status={orderInfo.status} />
+
+    {/* Третья строка: статус заказа с подсветкой */}
+    <div className={styles.statusContainer}>
+      <OrderStatus status={orderInfo.status} />
+    </div>
+
+    {/* Состав */}
     <p className={`text text_type_main-medium pt-15 pb=6`}>Состав:</p>
     <ul className={`${styles.list} mb-8`}>
       {Object.values(orderInfo.ingredientsInfo).map((item, index) => (
@@ -38,6 +50,8 @@ export const OrderInfoUI: FC<OrderInfoUIProps> = memo(({ orderInfo }) => (
         </li>
       ))}
     </ul>
+
+    {/* Общая сумма и дата */}
     <div className={styles.bottom}>
       <p className='text text_type_main-default text_color_inactive'>
         <FormattedDate date={orderInfo.date} />
