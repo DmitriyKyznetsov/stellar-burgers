@@ -61,7 +61,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({
           </div>
         </div>
         <div className={styles.logo}>
-          <Logo />
+          <Logo className='' />
         </div>
 
         <div
