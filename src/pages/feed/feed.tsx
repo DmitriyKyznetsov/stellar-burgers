@@ -12,6 +12,11 @@ export const Feed: FC = () => {
   const dispatch = useDispatch();
   const { loading, orders } = useSelector((state) => state.feed);
 
+  // Загрузка заказов при рендеренге компонента
+  useEffect(() => {
+    dispatch(fetchFeed());
+  }, [dispatch]);
+
   //if (!orders.length) {
   if (loading) {
     return <Preloader />;

@@ -40,8 +40,7 @@ const App = () => {
   // Загрузка данных
   useEffect(() => {
     dispatch(checkAuthThunk()); // Проверка авторизован ли пользователь
-    dispatch(fetchIngredients()); // Загрузка ингредиентов в конструктор
-    dispatch(fetchFeed()); // Загрузка истории заказов всех пользователей
+    dispatch(fetchIngredients()); // Загрузка ингредиентов в стор
   }, [dispatch]);
 
   return (
