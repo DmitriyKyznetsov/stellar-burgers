@@ -4,7 +4,13 @@ import styles from './app.module.css';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
+import {
+  AppHeader,
+  Modal,
+  OrderModal,
+  OrderInfo,
+  IngredientDetails
+} from '@components';
 import {
   ConstructorPage,
   Feed,
@@ -52,6 +58,7 @@ const App = () => {
         <Route path='*' element={<NotFound404 />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/profile/orders/:number' element={<OrderInfo />} />
 
         {/* Защищённые маршруты */}
         <Route
@@ -118,17 +125,17 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='Информация о заказе' onClose={closeModalHandler}>
+              <OrderModal onClose={closeModalHandler}>
                 <OrderInfo />
-              </Modal>
+              </OrderModal>
             }
           />
           <Route
-            path='profile/orders/:number'
+            path='/profile/orders/:number'
             element={
-              <Modal title='Информация о заказе' onClose={closeModalHandler}>
+              <OrderModal onClose={closeModalHandler}>
                 <OrderInfo />
-              </Modal>
+              </OrderModal>
             }
           />
         </Routes>

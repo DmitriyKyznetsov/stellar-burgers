@@ -15,6 +15,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const routeConfig: RouteConfig = {
     '/profile': { onlyUnAuth: false },
     '/profile/orders': { onlyUnAuth: false },
+    '/profile/orders/:number': { onlyUnAuth: false },
     '/login': { onlyUnAuth: true },
     '/register': { onlyUnAuth: true },
     '/forgot-password': { onlyUnAuth: true },
@@ -30,7 +31,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   // Только для неавторизованных
   if (routeProtection?.onlyUnAuth && user) {
-    return <Navigate replace to='/profile' />;
+    return <Navigate replace to='/' />;
   }
 
   // Только для авторизованных

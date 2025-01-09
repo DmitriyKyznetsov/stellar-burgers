@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createSlice,
+  PayloadAction,
+  createAsyncThunk,
+  createAction
+} from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
 import { orderBurgerApi } from '@api';
 import { TIngredient, TOrder, TConstructorIngredient } from '@utils-types';
@@ -29,22 +34,20 @@ export const placeOrder = createAsyncThunk(
   }
 );
 
+export const addIngredient = createAction(
+  'burgerConstructor/addIngredient',
+  (ingredient: TIngredient) => ({
+    payload: {
+      ...ingredient,
+      id: v4()
+    }
+  })
+);
+
 const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
   reducers: {
-    addIngredient: (state, action: PayloadAction<TIngredient>) => {
-      const ingredient = action.payload;
-      if (ingredient.type === 'bun') {
-        state.bun = ingredient;
-      } else {
-        const constructorIngredient: TConstructorIngredient = {
-          ...ingredient,
-          id: v4()
-        };
-        state.ingredients.push(constructorIngredient);
-      }
-    },
     removeIngredient: (state, action: PayloadAction<number>) => {
       state.ingredients.splice(action.payload, 1);
     },
@@ -65,6 +68,17 @@ const burgerConstructorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(
+        addIngredient,
+        (state, action: PayloadAction<TConstructorIngredient>) => {
+          const ingredient = action.payload;
+          if (ingredient.type === 'bun') {
+            state.bun = ingredient;
+          } else {
+            state.ingredients.push(ingredient);
+          }
+        }
+      )
       .addCase(placeOrder.pending, (state) => {
         state.orderRequest = true;
       })
@@ -81,7 +95,7 @@ const burgerConstructorSlice = createSlice({
 });
 
 export const {
-  addIngredient,
+  // addIngredient,
   removeIngredient,
   moveIngredient,
   clearConstructor
