@@ -1,5 +1,5 @@
 import { setCookie, deleteCookie } from './cookie';
-import { refreshToken as refreshTokenApi } from '@api';
+import { refreshToken as refreshTokenApi } from '../utils/burger-api';
 
 // Установка токенов
 export const handleTokens = (accessToken: string, refreshToken: string) => {

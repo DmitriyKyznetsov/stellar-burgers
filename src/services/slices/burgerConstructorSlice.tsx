@@ -5,7 +5,7 @@ import {
   createAction
 } from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
-import { orderBurgerApi } from '@api';
+import { orderBurgerApi } from '../../utils/burger-api';
 import { TIngredient, TOrder, TConstructorIngredient } from '@utils-types';
 
 interface BurgerConstructorState {

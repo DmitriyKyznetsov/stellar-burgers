@@ -7,7 +7,7 @@ import {
   loginUserApi,
   registerUserApi,
   logoutApi
-} from '@api';
+} from '../../utils/burger-api';
 import { setAuthentificated, unsetAuthentificated } from './authSlice';
 import {
   setUser,
@@ -119,12 +119,12 @@ const loginSlice = createSlice({
       .addCase(loginThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(loginThunk.fulfilled, (state, response) => {
+      .addCase(loginThunk.fulfilled, (state) => {
         state.loading = false;
       })
       .addCase(loginThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Результат регистрации
       .addCase(registerThunk.pending, (state) => {
@@ -135,15 +135,27 @@ const loginSlice = createSlice({
       })
       .addCase(registerThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Восстановление пароля (запрос)
+      .addCase(forgotPasswordThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(forgotPasswordThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
       .addCase(forgotPasswordThunk.rejected, (state, action) => {
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Восстановление пароля (подтверждение)
+      .addCase(resetPasswordThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetPasswordThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
       .addCase(resetPasswordThunk.rejected, (state, action) => {
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Результат выхода из системы
       .addCase(logoutThunk.pending, (state) => {
@@ -151,6 +163,9 @@ const loginSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.loading = false;
+      })
+      .addCase(logoutThunk.rejected, (state, action) => {
+        state.error = action.error.message || 'Неизвестная ошибка';
       });
   }
 });

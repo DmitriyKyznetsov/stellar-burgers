@@ -18,7 +18,7 @@ import loginReducer from './slices/loginSlice';
 //const rootReducer = () => {}; // Заменить на импорт настоящего редьюсера
 
 // "Настоящий" редьюсер
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   feed: feedReducer,
   order: orderReducer,
