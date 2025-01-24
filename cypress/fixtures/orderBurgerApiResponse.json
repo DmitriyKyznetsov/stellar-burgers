@@ -1,0 +1,49 @@
+{
+    "success": true,
+    "name": "Тестовый бургер",
+    "order": {
+        "ingredients": [
+            {
+                "_id": "1",
+                "name": "Флюоресцентная булка R2-D3",
+                "type": "bun",
+                "proteins": 44,
+                "fat": 26,
+                "carbohydrates": 85,
+                "calories": 643,
+                "price": 988,
+                "image": "https://code.s3.yandex.net/react/code/bun-01.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-01-large.png",
+                "__v": 0
+            },
+            {
+                "_id": "1",
+                "name": "Флюоресцентная булка R2-D3",
+                "type": "bun",
+                "proteins": 44,
+                "fat": 26,
+                "carbohydrates": 85,
+                "calories": 643,
+                "price": 988,
+                "image": "https://code.s3.yandex.net/react/code/bun-01.png",
+                "image_mobile": "https://code.s3.yandex.net/react/code/bun-01-mobile.png",
+                "image_large": "https://code.s3.yandex.net/react/code/bun-01-large.png",
+                "__v": 0
+            }
+        ],
+        "_id": "678e830e133acd001be4b92b",
+        "owner": {
+            "name": "test",
+            "email": "test@mail.ru",
+            "createdAt": "2024-12-22T20:00:58.231Z",
+            "updatedAt": "2025-01-08T12:59:30.592Z"
+        },
+        "status": "done",
+        "name": "тестовый бургер",
+        "createdAt": "2025-01-20T17:08:30.227Z",
+        "updatedAt": "2025-01-20T17:08:30.879Z",
+        "number": 12345,
+        "price": 4321
+    }
+}

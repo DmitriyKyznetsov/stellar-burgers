@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUserApi, updateUserApi, getOrdersApi } from '@api';
+import {
+  getUserApi,
+  updateUserApi,
+  getOrdersApi
+} from '../../utils/burger-api';
 import { TUser, TOrder } from '@utils-types';
 import { TRegisterData } from '@api';
 import { RootState } from '../store';
@@ -14,7 +18,7 @@ type UserState = {
   error: string | null;
 };
 
-const initialState: UserState = {
+export const initialState: UserState = {
   data: null,
   userOrders: [],
   loading: true,
@@ -96,7 +100,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserDataThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Загрузка заказов
       .addCase(fetchUserOrdersThunk.pending, (state) => {
@@ -109,7 +113,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserOrdersThunk.rejected, (state, action) => {
         state.ordersLoading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Обновление данных пользователя
       .addCase(updateUserThunk.pending, (state) => {
@@ -121,7 +125,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       });
   }
 });

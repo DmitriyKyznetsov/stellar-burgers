@@ -13,7 +13,7 @@ type AuthState = {
   error: string | null;
 };
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   isAuthenticated: false,
   loading: true,
   error: null
@@ -79,7 +79,7 @@ export const authSlice = createSlice({
       .addCase(checkAuthThunk.rejected, (state, action) => {
         state.loading = false;
         state.isAuthenticated = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Неизвестная ошибка';
       });
   }
 });
