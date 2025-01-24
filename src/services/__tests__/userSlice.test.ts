@@ -5,7 +5,8 @@ import userReducer, {
   clearUser,
   setUser,
   setUserLoading,
-  unsetUserLoading
+  unsetUserLoading,
+  initialState
 } from '../slices/userSlice';
 
 // Мокаем API
@@ -17,13 +18,8 @@ import {
 } from '../../utils/burger-api';
 
 describe('userSlice', () => {
-  const initialState = {
-    data: null,
-    userOrders: [],
-    loading: true,
-    ordersLoading: false,
-    error: null
-  };
+  // Общая переменная состояния
+  let newState: typeof initialState;
 
   const mockUser = {
     email: 'test@mail.ru',
@@ -42,38 +38,45 @@ describe('userSlice', () => {
     }
   ];
 
+  const errorMessage = 'Ошибка загрузки данных пользователя';
+
   beforeEach(() => {
     jest.clearAllMocks();
+    // Сбрасываем состояние перед каждым тестом
+    newState = { ...initialState };
   });
 
   describe('Редьюсеры', () => {
     it('clearUser очищает данные пользователя', () => {
-      const stateWithUser = { ...initialState, data: mockUser };
-      const newState = userReducer(stateWithUser, clearUser());
+      newState = {
+        ...newState,
+        data: { email: 'test@mail.ru', name: 'Test User' }
+      };
+      newState = userReducer(newState, clearUser());
       expect(newState.data).toBeNull();
     });
 
     it('setUser устанавливает данные пользователя', () => {
-      const newState = userReducer(initialState, setUser(mockUser));
+      newState = userReducer(newState, setUser(mockUser));
       expect(newState.data).toEqual(mockUser);
     });
 
     it('setUserLoading устанавливает loading в true', () => {
-      const newState = userReducer(initialState, setUserLoading());
+      newState = userReducer(newState, setUserLoading());
       expect(newState.loading).toBe(true);
     });
 
     it('unsetUserLoading устанавливает loading в false', () => {
-      const stateWithLoading = { ...initialState, loading: true };
-      const newState = userReducer(stateWithLoading, unsetUserLoading());
+      newState = { ...newState, loading: true };
+      newState = userReducer(newState, unsetUserLoading());
       expect(newState.loading).toBe(false);
     });
   });
 
   describe('fetchUserDataThunk', () => {
     it('fetchUserDataThunk.pending устанавливает loading в true', () => {
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         fetchUserDataThunk.pending('', undefined)
       );
       expect(newState.loading).toBe(true);
@@ -82,9 +85,8 @@ describe('userSlice', () => {
 
     it('fetchUserDataThunk.fulfilled обновляет данные пользователя и отключает loading', () => {
       (getUserApi as jest.Mock).mockResolvedValueOnce({ user: mockUser });
-
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         fetchUserDataThunk.fulfilled(mockUser, '', undefined)
       );
       expect(newState.loading).toBe(false);
@@ -92,12 +94,11 @@ describe('userSlice', () => {
     });
 
     it('fetchUserDataThunk.rejected сохраняет ошибку и отключает loading', () => {
-      const errorMessage = 'Ошибка загрузки данных пользователя';
       // Мокаем ошибку
       (getUserApi as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         fetchUserDataThunk.rejected(new Error(errorMessage), '', undefined)
       );
       expect(newState.loading).toBe(false);
@@ -107,8 +108,8 @@ describe('userSlice', () => {
 
   describe('fetchUserOrdersThunk', () => {
     it('fetchUserOrdersThunk.pending устанавливает ordersLoading в true', () => {
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         fetchUserOrdersThunk.pending('', undefined)
       );
       expect(newState.ordersLoading).toBe(true);
@@ -118,8 +119,8 @@ describe('userSlice', () => {
     it('fetchUserOrdersThunk.fulfilled обновляет заказы пользователя и отключает ordersLoading', () => {
       (getOrdersApi as jest.Mock).mockResolvedValueOnce(mockOrders);
 
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         fetchUserOrdersThunk.fulfilled(mockOrders, '', undefined)
       );
       expect(newState.ordersLoading).toBe(false);
@@ -127,13 +128,12 @@ describe('userSlice', () => {
     });
 
     it('fetchUserOrdersThunk.rejected сохраняет ошибку и отключает ordersLoading', () => {
-      const errorMessage = 'Ошибка загрузки заказов';
       (getOrdersApi as jest.Mock).mockRejectedValueOnce(
         new Error(errorMessage)
       );
 
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         fetchUserOrdersThunk.rejected(new Error(errorMessage), '', undefined)
       );
       expect(newState.ordersLoading).toBe(false);
@@ -148,9 +148,9 @@ describe('userSlice', () => {
     };
 
     it('updateUserThunk.pending устанавливает loading в true', () => {
-      const newState = userReducer(
-        initialState,
-        updateUserThunk.pending('', mockUser)
+      newState = userReducer(
+        newState,
+        updateUserThunk.pending('', updatedUser)
       );
       expect(newState.loading).toBe(true);
     });
@@ -160,8 +160,8 @@ describe('userSlice', () => {
         user: updatedUser
       });
 
-      const newState = userReducer(
-        initialState,
+      newState = userReducer(
+        newState,
         updateUserThunk.fulfilled(updatedUser, '', mockUser)
       );
       expect(newState.data).toEqual(updatedUser);
@@ -169,15 +169,14 @@ describe('userSlice', () => {
     });
 
     it('updateUserThunk.rejected сохраняет ошибку и отключает loading', () => {
-      const errorMessage = 'Ошибка обновления пользователя';
       // Мокаем ошибку
       (updateUserApi as jest.Mock).mockRejectedValueOnce(
         new Error(errorMessage)
       );
 
-      const newState = userReducer(
-        initialState,
-        updateUserThunk.rejected(new Error(errorMessage), '', mockUser)
+      newState = userReducer(
+        newState,
+        updateUserThunk.rejected(new Error(errorMessage), '', updatedUser)
       );
       expect(newState.loading).toBe(false);
       expect(newState.error).toBe(errorMessage);

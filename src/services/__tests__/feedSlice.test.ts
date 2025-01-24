@@ -1,17 +1,13 @@
-import feedReducer, { fetchFeed } from '../slices/feedSlice';
+import feedReducer, { fetchFeed, initialState } from '../slices/feedSlice';
 
 jest.mock('../../utils/burger-api');
 import { getFeedsApi } from '../../utils/burger-api';
 
 describe('feedSlice', () => {
-  const initialState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    loading: true,
-    error: null
-  };
+  // Общая переменная состояния
+  let newState: typeof initialState;
 
+  // Мокаем успешный ответ для getFeedsApi
   const mockFeedResponse = {
     success: true,
     orders: [
@@ -35,21 +31,20 @@ describe('feedSlice', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Сбрасываем состояние перед каждым тестом
+    newState = { ...initialState };
   });
 
   describe('fetchFeed', () => {
     it('fetchFeed.pending', () => {
-      const newState = feedReducer(
-        initialState,
-        fetchFeed.pending('', undefined)
-      );
+      newState = feedReducer(newState, fetchFeed.pending('', undefined));
       expect(newState.loading).toBe(true);
       expect(newState.error).toBeNull();
     });
 
     it('fetchFeed.fulfilled', () => {
-      const newState = feedReducer(
-        initialState,
+      newState = feedReducer(
+        newState,
         fetchFeed.fulfilled(mockFeedResponse, '', undefined)
       );
 
@@ -68,8 +63,8 @@ describe('feedSlice', () => {
       // Мокаем ошибку при вызове getFeedsApi
       (getFeedsApi as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
 
-      const newState = feedReducer(
-        initialState,
+      newState = feedReducer(
+        newState,
         fetchFeed.rejected(new Error(errorMessage), '', undefined)
       );
 

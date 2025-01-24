@@ -1,5 +1,6 @@
 import ingredientsReducer, {
-  fetchIngredients
+  fetchIngredients,
+  initialState
 } from '../slices/ingredientsSlice';
 
 // Мокаем API
@@ -39,20 +40,17 @@ describe('ingredientsSlice', () => {
     }
   ];
 
-  // Начальное состояние слайса
-  const initialState = {
-    items: [],
-    loading: false,
-    error: null
-  };
+  // Общая переменная состояния
+  let newState: typeof initialState;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    newState = { ...initialState };
   });
 
   it('Состояние при fetchIngredients.pending', () => {
-    const newState = ingredientsReducer(
-      initialState,
+    newState = ingredientsReducer(
+      newState,
       fetchIngredients.pending('', undefined)
     );
 
@@ -66,8 +64,8 @@ describe('ingredientsSlice', () => {
     // Мокаем успешный ответ от API
     (getIngredientsApi as jest.Mock).mockResolvedValueOnce(mockIngredients);
 
-    const newState = ingredientsReducer(
-      initialState,
+    newState = ingredientsReducer(
+      newState,
       fetchIngredients.fulfilled(mockIngredients, '', undefined)
     );
 
@@ -86,8 +84,8 @@ describe('ingredientsSlice', () => {
 
     // Мокаем rejected с передачей объекта ошибки
     const error = new Error(errorMessage);
-    const newState = ingredientsReducer(
-      initialState,
+    newState = ingredientsReducer(
+      newState,
       fetchIngredients.rejected(error, '', undefined)
     );
 

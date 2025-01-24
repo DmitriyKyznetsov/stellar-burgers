@@ -3,7 +3,8 @@ import authReducer, {
   setAuthentificated,
   unsetAuthentificated,
   setAuthLoading,
-  unsetAuthLoading
+  unsetAuthLoading,
+  initialState // Импортируем initialState
 } from '../slices/authSlice';
 
 // Мокаем API и функции
@@ -18,44 +19,38 @@ jest.mock('../slices/userSlice');
 import { getUserApi } from '../../utils/burger-api';
 
 describe('authSlice', () => {
-  // Начальное состояние
-  const initialState = {
-    isAuthenticated: false,
-    loading: true,
-    error: null
-  };
-
   // Ошибка
   const errorMessage = 'Ошибка авторизации';
 
+  // Общая переменная состояния
+  let newState: typeof initialState;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    // Начальное состояние перед каждым тестом
+    newState = { ...initialState };
   });
 
   describe('Редьюсеры', () => {
     it('setAuthentificated', () => {
-      const newState = authReducer(initialState, setAuthentificated());
+      newState = authReducer(newState, setAuthentificated());
       expect(newState.isAuthenticated).toBe(true);
     });
 
     it('unsetAuthentificated', () => {
-      const newState = authReducer(
-        { ...initialState, isAuthenticated: true },
-        unsetAuthentificated()
-      );
+      newState = { ...newState, isAuthenticated: true };
+      newState = authReducer(newState, unsetAuthentificated());
       expect(newState.isAuthenticated).toBe(false);
     });
 
     it('setAuthLoading', () => {
-      const newState = authReducer(initialState, setAuthLoading());
+      newState = authReducer(newState, setAuthLoading());
       expect(newState.loading).toBe(true);
     });
 
     it('unsetAuthLoading', () => {
-      const newState = authReducer(
-        { ...initialState, loading: true },
-        unsetAuthLoading()
-      );
+      newState = { ...newState, loading: true };
+      newState = authReducer(newState, unsetAuthLoading());
       expect(newState.loading).toBe(false);
     });
   });
@@ -66,10 +61,7 @@ describe('authSlice', () => {
     });
 
     it('checkAuthThunk.pending', () => {
-      const newState = authReducer(
-        initialState,
-        checkAuthThunk.pending('', undefined)
-      );
+      newState = authReducer(newState, checkAuthThunk.pending('', undefined));
       expect(newState.loading).toBe(true);
     });
 
@@ -83,8 +75,8 @@ describe('authSlice', () => {
       (getCookie as jest.Mock).mockReturnValueOnce('mockAccessToken');
       (getUserApi as jest.Mock).mockResolvedValueOnce({ user: mockUser });
 
-      const newState = authReducer(
-        initialState,
+      newState = authReducer(
+        newState,
         checkAuthThunk.fulfilled(true, '', undefined)
       );
 
@@ -99,8 +91,8 @@ describe('authSlice', () => {
         new Error(errorMessage)
       );
 
-      const newState = authReducer(
-        initialState,
+      newState = authReducer(
+        newState,
         checkAuthThunk.rejected(new Error(errorMessage), '', undefined)
       );
 

@@ -13,7 +13,7 @@ type AuthState = {
   error: string | null;
 };
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   isAuthenticated: false,
   loading: true,
   error: null

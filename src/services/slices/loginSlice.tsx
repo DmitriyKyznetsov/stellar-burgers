@@ -23,7 +23,7 @@ type LoginState = {
   error: string | null;
 };
 
-const initialState: LoginState = {
+export const initialState: LoginState = {
   loading: true,
   error: null
 };
@@ -143,8 +143,10 @@ const loginSlice = createSlice({
       })
       .addCase(forgotPasswordThunk.fulfilled, (state) => {
         state.loading = false;
+        state.error = null;
       })
       .addCase(forgotPasswordThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message || 'Неизвестная ошибка';
       })
       // Восстановление пароля (подтверждение)
@@ -153,9 +155,11 @@ const loginSlice = createSlice({
       })
       .addCase(resetPasswordThunk.fulfilled, (state) => {
         state.loading = false;
+        state.error = null;
       })
       .addCase(resetPasswordThunk.rejected, (state, action) => {
         state.error = action.error.message || 'Неизвестная ошибка';
+        state.loading = false;
       })
       // Результат выхода из системы
       .addCase(logoutThunk.pending, (state) => {
@@ -163,8 +167,10 @@ const loginSlice = createSlice({
       })
       .addCase(logoutThunk.fulfilled, (state) => {
         state.loading = false;
+        state.error = null;
       })
       .addCase(logoutThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message || 'Неизвестная ошибка';
       });
   }

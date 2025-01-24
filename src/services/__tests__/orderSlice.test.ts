@@ -1,6 +1,7 @@
 import orderReducer, {
   fetchOrderByNumber,
-  clearOrder
+  clearOrder,
+  initialState
 } from '../slices/orderSlice';
 
 jest.mock('../../utils/burger-api');
@@ -23,24 +24,24 @@ describe('orderSlice', () => {
     ]
   };
 
-  const initialState = {
-    currentOrder: null,
-    loading: false,
-    error: null
-  };
+  // Общая переменная состояния
+  let newState: typeof initialState;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    // Сбрасываем состояние перед каждым тестом
+    newState = { ...initialState };
   });
 
   describe('Редьюсеры', () => {
-    it('clearOrder сбрасывает состояние currentOrder и error', () => {
-      const stateWithOrder = {
+    it('clearOrder', () => {
+      newState = {
         currentOrder: mockOrderResponse.orders[0],
         loading: false,
         error: null
       };
-      const newState = orderReducer(stateWithOrder, clearOrder());
+
+      newState = orderReducer(newState, clearOrder());
       expect(newState.currentOrder).toBeNull();
       expect(newState.error).toBeNull();
     });
@@ -48,8 +49,8 @@ describe('orderSlice', () => {
 
   describe('fetchOrderByNumber', () => {
     it('fetchOrderByNumber.pending', () => {
-      const newState = orderReducer(
-        initialState,
+      newState = orderReducer(
+        newState,
         fetchOrderByNumber.pending('', mockOrderResponse.orders[0].number)
       );
       expect(newState.loading).toBe(true);
@@ -57,8 +58,8 @@ describe('orderSlice', () => {
     });
 
     it('fetchOrderByNumber.fulfilled', () => {
-      const newState = orderReducer(
-        initialState,
+      newState = orderReducer(
+        newState,
         fetchOrderByNumber.fulfilled(
           mockOrderResponse,
           '',

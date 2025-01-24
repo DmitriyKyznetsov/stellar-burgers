@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1737666076843" clover="3.2.0">
-  <project timestamp="1737666076843" name="All files">
-    <metrics statements="1012" coveredstatements="682" conditionals="73" coveredconditionals="61" methods="48" coveredmethods="21" elements="1133" coveredelements="764" complexity="0" loc="1012" ncloc="1012" packages="3" files="11" classes="11"/>
+<coverage generated="1737675300171" clover="3.2.0">
+  <project timestamp="1737675300171" name="All files">
+    <metrics statements="1018" coveredstatements="688" conditionals="73" coveredconditionals="61" methods="48" coveredmethods="21" elements="1139" coveredelements="770" complexity="0" loc="1018" ncloc="1018" packages="3" files="11" classes="11"/>
     <package name="services">
       <metrics statements="43" coveredstatements="43" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="store.ts" path="C:\Users\Dmitriy\Desktop\YandexPracticum\Projects\16\stellar-burgers\src\services\store.ts">
@@ -52,7 +52,7 @@
       </file>
     </package>
     <package name="services.slices">
-      <metrics statements="667" coveredstatements="541" conditionals="73" coveredconditionals="61" methods="26" coveredmethods="21"/>
+      <metrics statements="673" coveredstatements="547" conditionals="73" coveredconditionals="61" methods="26" coveredmethods="21"/>
       <file name="authSlice.tsx" path="C:\Users\Dmitriy\Desktop\YandexPracticum\Projects\16\stellar-burgers\src\services\slices\authSlice.tsx">
         <metrics statements="93" coveredstatements="71" conditionals="9" coveredconditionals="8" methods="6" coveredmethods="5"/>
         <line num="1" count="1" type="stmt"/>
@@ -368,7 +368,7 @@
         <line num="49" count="1" type="stmt"/>
       </file>
       <file name="loginSlice.tsx" path="C:\Users\Dmitriy\Desktop\YandexPracticum\Projects\16\stellar-burgers\src\services\slices\loginSlice.tsx">
-        <metrics statements="175" coveredstatements="129" conditionals="24" coveredconditionals="19" methods="4" coveredmethods="4"/>
+        <metrics statements="181" coveredstatements="135" conditionals="24" coveredconditionals="19" methods="4" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -514,36 +514,42 @@
         <line num="143" count="2" type="stmt"/>
         <line num="144" count="2" type="cond" truecount="1" falsecount="0"/>
         <line num="145" count="1" type="stmt"/>
-        <line num="146" count="2" type="stmt"/>
-        <line num="147" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="148" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="149" count="2" type="stmt"/>
-        <line num="150" count="2" type="stmt"/>
-        <line num="151" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="152" count="1" type="stmt"/>
-        <line num="153" count="2" type="stmt"/>
-        <line num="154" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="155" count="1" type="stmt"/>
-        <line num="156" count="2" type="stmt"/>
-        <line num="157" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="158" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="146" count="1" type="stmt"/>
+        <line num="147" count="2" type="stmt"/>
+        <line num="148" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="149" count="1" type="stmt"/>
+        <line num="150" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="151" count="2" type="stmt"/>
+        <line num="152" count="2" type="stmt"/>
+        <line num="153" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="154" count="1" type="stmt"/>
+        <line num="155" count="2" type="stmt"/>
+        <line num="156" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="157" count="1" type="stmt"/>
+        <line num="158" count="1" type="stmt"/>
         <line num="159" count="2" type="stmt"/>
-        <line num="160" count="2" type="stmt"/>
-        <line num="161" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="160" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="161" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="162" count="1" type="stmt"/>
         <line num="163" count="2" type="stmt"/>
-        <line num="164" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="165" count="1" type="stmt"/>
-        <line num="166" count="2" type="stmt"/>
-        <line num="167" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="168" count="1" type="cond" truecount="0" falsecount="1"/>
-        <line num="169" count="2" type="stmt"/>
-        <line num="170" count="2" type="stmt"/>
-        <line num="171" count="1" type="stmt"/>
-        <line num="172" count="1" type="stmt"/>
+        <line num="164" count="2" type="stmt"/>
+        <line num="165" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="166" count="1" type="stmt"/>
+        <line num="167" count="2" type="stmt"/>
+        <line num="168" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="169" count="1" type="stmt"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="171" count="2" type="stmt"/>
+        <line num="172" count="2" type="cond" truecount="1" falsecount="0"/>
         <line num="173" count="1" type="stmt"/>
-        <line num="174" count="1" type="stmt"/>
-        <line num="175" count="1" type="stmt"/>
+        <line num="174" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="175" count="2" type="stmt"/>
+        <line num="176" count="2" type="stmt"/>
+        <line num="177" count="1" type="stmt"/>
+        <line num="178" count="1" type="stmt"/>
+        <line num="179" count="1" type="stmt"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="181" count="1" type="stmt"/>
       </file>
       <file name="orderSlice.tsx" path="C:\Users\Dmitriy\Desktop\YandexPracticum\Projects\16\stellar-burgers\src\services\slices\orderSlice.tsx">
         <metrics statements="55" coveredstatements="49" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="2"/>

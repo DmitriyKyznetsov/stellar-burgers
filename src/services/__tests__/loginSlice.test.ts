@@ -6,7 +6,8 @@ import loginReducer, {
   resetPasswordThunk,
   setError,
   setLoginLoading,
-  unsetLoginLoading
+  unsetLoginLoading,
+  initialState
 } from '../slices/loginSlice';
 
 // Мокаем API
@@ -20,12 +21,6 @@ import {
 } from '../../utils/burger-api';
 
 describe('loginSlice', () => {
-  // Начальное состояние слайса
-  const initialState = {
-    loading: false,
-    error: null
-  };
-
   // Данные для мока
   const mockLoginResponse = {
     success: true,
@@ -42,20 +37,28 @@ describe('loginSlice', () => {
     message: 'Password successfully reset'
   };
 
+  // Общая переменная состояния
+  let newState: typeof initialState;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    newState = { ...initialState }; // Сбрасываем состояние перед каждым тестом
+  });
+
   describe('loginSlice редьюсеры', () => {
     it('setError редьюсер изменяет состояние ошибки', () => {
-      const newState = loginReducer(initialState, setError('Test Error'));
+      newState = loginReducer(newState, setError('Test Error'));
       expect(newState.error).toBe('Test Error');
     });
 
     it('setLoginLoading редьюсер устанавливает состояние загрузки', () => {
-      const newState = loginReducer(initialState, setLoginLoading());
+      newState = loginReducer(newState, setLoginLoading());
       expect(newState.loading).toBe(true);
     });
 
     it('unsetLoginLoading редьюсер убирает состояние загрузки', () => {
-      const newState = loginReducer(
-        { ...initialState, loading: true },
+      newState = loginReducer(
+        { ...newState, loading: true },
         unsetLoginLoading()
       );
       expect(newState.loading).toBe(false);
@@ -74,13 +77,7 @@ describe('loginSlice', () => {
     });
 
     it('Состояние при loginThunk.pending', () => {
-      // Передаем их в pending
-      const newState = loginReducer(
-        initialState,
-        loginThunk.pending('', loginData)
-      );
-
-      // Проверяем состояние
+      newState = loginReducer(newState, loginThunk.pending('', loginData));
       expect(newState.loading).toBe(true);
       expect(newState.error).toBeNull();
     });
@@ -88,9 +85,8 @@ describe('loginSlice', () => {
     it('Состояние при loginThunk.fulfilled', () => {
       // Мокаем успешный ответ от API
       (loginUserApi as jest.Mock).mockResolvedValueOnce(mockLoginResponse);
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         loginThunk.fulfilled(mockLoginResponse, '', loginData)
       );
 
@@ -102,9 +98,8 @@ describe('loginSlice', () => {
       (loginUserApi as jest.Mock).mockRejectedValueOnce(
         new Error(errorMessage)
       );
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         loginThunk.rejected(new Error(errorMessage), '', loginData)
       );
 
@@ -126,20 +121,15 @@ describe('loginSlice', () => {
     });
 
     it('Состояние при logoutThunk.pending', () => {
-      const newState = loginReducer(
-        initialState,
-        logoutThunk.pending('', undefined)
-      );
-
+      newState = loginReducer(newState, logoutThunk.pending('', undefined));
       expect(newState.loading).toBe(true);
       expect(newState.error).toBeNull();
     });
 
     it('Состояние при logoutThunk.fulfilled', () => {
       (logoutApi as jest.Mock).mockResolvedValueOnce(mockLogoutResponse);
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         logoutThunk.fulfilled(undefined, '', undefined)
       );
 
@@ -149,9 +139,8 @@ describe('loginSlice', () => {
 
     it('Состояние при logoutThunk.rejected', () => {
       (logoutApi as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         logoutThunk.rejected(new Error(errorMessage), '', undefined)
       );
 
@@ -176,8 +165,8 @@ describe('loginSlice', () => {
     });
 
     it('Состояние при registerThunk.pending', () => {
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         registerThunk.pending('', registerData)
       );
 
@@ -188,9 +177,8 @@ describe('loginSlice', () => {
     it('Состояние при registerThunk.fulfilled', () => {
       // Мокаем успешный ответ от API
       (registerUserApi as jest.Mock).mockResolvedValueOnce(mockLoginResponse);
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         registerThunk.fulfilled(mockLoginResponse.user, '', registerData)
       );
 
@@ -203,9 +191,8 @@ describe('loginSlice', () => {
       (registerUserApi as jest.Mock).mockRejectedValueOnce(
         new Error(errorMessage)
       );
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         registerThunk.rejected(new Error(errorMessage), '', registerData)
       );
 
@@ -223,8 +210,8 @@ describe('loginSlice', () => {
     });
 
     it('Состояние при forgotPasswordThunk.pending', () => {
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         forgotPasswordThunk.pending('', emailData)
       );
 
@@ -236,9 +223,8 @@ describe('loginSlice', () => {
       (forgotPasswordApi as jest.Mock).mockResolvedValueOnce(
         mockResetPasswordResponse
       );
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         forgotPasswordThunk.fulfilled(undefined, '', emailData)
       );
 
@@ -250,9 +236,8 @@ describe('loginSlice', () => {
       (forgotPasswordApi as jest.Mock).mockRejectedValueOnce(
         new Error(errorMessage)
       );
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         forgotPasswordThunk.rejected(new Error(errorMessage), '', emailData)
       );
 
@@ -270,8 +255,8 @@ describe('loginSlice', () => {
     });
 
     it('Состояние при resetPasswordThunk.pending', () => {
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         resetPasswordThunk.pending('', resetData)
       );
 
@@ -283,9 +268,8 @@ describe('loginSlice', () => {
       (resetPasswordApi as jest.Mock).mockResolvedValueOnce(
         mockResetPasswordResponse
       );
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         resetPasswordThunk.fulfilled(undefined, '', resetData)
       );
 
@@ -297,9 +281,8 @@ describe('loginSlice', () => {
       (resetPasswordApi as jest.Mock).mockRejectedValueOnce(
         new Error(errorMessage)
       );
-
-      const newState = loginReducer(
-        initialState,
+      newState = loginReducer(
+        newState,
         resetPasswordThunk.rejected(new Error(errorMessage), '', resetData)
       );
 
